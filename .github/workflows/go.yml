@@ -15,11 +15,10 @@ jobs:
         uses: actions/setup-go@v1 # 设置 Go 语言环境
         
       - name: Build Go file
-        run: go build main.go # 编译 Go 文件（这里假设主要文件为 main.go）
+        run: go build ./... # 编译 Go 文件（这里假设主要文件为 main.go）
         
       - name: Upload compiled binary to artifact
         uses: actions/upload-artifact@v3 # 将编译后的二进制文件保存为构建产物
-          with:
             path: ./main # 指定生成的二进制文件路径
             
       - name: Download compiled binary from artifact
