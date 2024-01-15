@@ -1,4 +1,4 @@
-name: Build RotateProxy
+name: go
 
 on:
   push:
