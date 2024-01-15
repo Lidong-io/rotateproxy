@@ -1,31 +1,28 @@
-name: go
+name: Go
 
 on:
   push:
-    branches:
-      - master
+    branches: [ "master" ]
 
 jobs:
   build:
-    runs-on: ubuntu-latest
-
+    runs-on: windows-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+    - uses: actions/checkout@v3
 
-      - name: Set up Go
-        uses: actions/setup-go@v2
-        with:
-          go-version: '1.17'  # 指定所需的 Go 版本
+    - name: Set up Go
+      uses: actions/setup-go@v4
+      with:
+        go-version: '1.17'
 
-      - name: Download RotateProxy code
-        run: git clone https://github.com/Lidong-io/rotateproxy.git ./rotateproxy
+    - name: Build
+      run: go build -v ./...
 
-      - name: Build RotateProxy binary for Windows
-        run: GOOS=windows GOARCH=amd64 go build -o rotateproxy.exe ./rotateproxy
+    - name: Test
+      run: go test -v ./...
 
-      - name: Upload binary as artifact
-        uses: actions/upload-artifact@v2
-        with:
-          name: rotateproxy-artifact
-          path: rotateproxy.exe
+    - name: Upload exe as artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: my-artifact  # 指定 artifact 的名称
+        path: .            # 指定上传的路径，这里是当前目录
