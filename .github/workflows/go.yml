@@ -1,26 +1,28 @@
 name: Go
-
-on:
+on: 
   push:
     branches: [ "master" ]
 
 jobs:
-  build:
-    runs-on: windows-latest
+  build-and-get:
+    runs-on: windows-latest # 在最新版本的 Ubuntu 操作系统上运行
+    
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
-
-    - name: Set up Go
-      uses: actions/setup-go@v4
-      with:
-        go-version: '1.20'
-
-    - name: Build
-      run: go build -v ./...
-
-    - name: Test
-      run: go test -v ./...
-
-    - name: Upload artifacts
-      uses: actions/upload-release-asset@v1
+      - name: Checkout code
+        uses: actions/checkout@v2 # 拉取代码到 runner
+      
+      - name: Set up Go
+        uses: actions/setup-go@v1 # 设置 Go 语言环境
+        
+      - name: Build Go file
+        run: go build main.go # 编译 Go 文件（这里假设主要文件为 main.go）
+        
+      - name: Upload compiled binary to artifact
+        uses: actions/upload-artifact@v3 # 将编译后的二进制文件保存为构建产物
+          with:
+            path: ./main # 指定生成的二进制文件路径
+            
+      - name: Download compiled binary from artifact
+        uses: actions/download-artifact@v2 # 从构建产物中下载已经编译好的二进制文件
+          with:
+            name: main # 指定之前保存的构建产物名称
